@@ -49,3 +49,25 @@ header p {
   color: #9eb5b4;
 }
 
+.leaflet-popup-content {
+  text-align: center;
+}
+
+.leaflet-popup-content h3 {
+  margin: 0.5rem 0;
+  color: #1f1c2c;
+}
+
+.leaflet-popup-content img {
+  margin: 0.5rem 0;
+  max-width: 200px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.leaflet-popup-content p {
+  margin: 0.5rem 0;
+  color: #666;
+  font-size: 0.9rem;
+}
+

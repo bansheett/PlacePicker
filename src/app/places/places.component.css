@@ -59,3 +59,42 @@ ul {
   padding: 0.15rem 0.35rem;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
 }
+
+.place-content {
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  height: 100%;
+}
+
+.place-content img {
+  width: 100%;
+  height: 10rem;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.place-content h3 {
+  margin: 0.5rem 0;
+  font-size: 1.25rem;
+  color: #defaf8;
+}
+
+.remove-button {
+  background: none;
+  border: 1px solid #ff6b6b;
+  color: #ff6b6b;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  margin-top: auto;
+}
+
+.remove-button:hover {
+  background: #ff6b6b;
+  color: white;
+}

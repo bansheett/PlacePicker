@@ -1,12 +1,15 @@
 import { Component, input } from '@angular/core';
+import { MapComponent } from '../map/map.component';
+import { Place } from '../place.model';
 
 @Component({
   selector: 'app-places-container',
   standalone: true,
-  imports: [],
+  imports: [MapComponent],
   templateUrl: './places-container.component.html',
   styleUrl: './places-container.component.css'
 })
 export class PlacesContainerComponent {
   title = input.required<string>();
+  places = input<Place[]>();
 }

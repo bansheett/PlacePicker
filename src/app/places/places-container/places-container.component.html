@@ -1,4 +1,7 @@
 <section>
   <h2>{{ title() }}</h2>
+  @if (places()) {
+    <app-map [places]="places() ?? []"/>
+  }
   <ng-content />
 </section>

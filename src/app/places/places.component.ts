@@ -11,9 +11,15 @@ import { Place } from './place.model';
 })
 export class PlacesComponent {
   places = input.required<Place[]>();
+  showRemoveButton = input<boolean>(false);
   selectPlace = output<Place>();
+  removePlace = output<Place>();
 
   onSelectPlace(place: Place) {
     this.selectPlace.emit(place);
+  }
+
+  onRemovePlace(place: Place) {
+    this.removePlace.emit(place);
   }
 }

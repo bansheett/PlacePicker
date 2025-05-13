@@ -1,13 +1,26 @@
 <ul>
   @for (place of places(); track place.id) {
     <li class="place-item">
-      <button (click)="onSelectPlace(place)">
-        <img
-          [src]="'http://localhost:3000/' + place.image.src"
-          [alt]="place.image.alt"
-        />
-        <h3>{{ place.title }}</h3>
-      </button>
+      @if (!showRemoveButton()) {
+        <button (click)="onSelectPlace(place)">
+          <img
+            [src]="'http://localhost:3000/' + place.image.src"
+            [alt]="place.image.alt"
+          />
+          <h3>{{ place.title }}</h3>
+        </button>
+      } @else {
+        <div class="place-content">
+          <img
+            [src]="'http://localhost:3000/' + place.image.src"
+            [alt]="place.image.alt"
+          />
+          <h3>{{ place.title }}</h3>
+          <button class="remove-button" (click)="onRemovePlace(place)">
+            Rimuovi dai preferiti
+          </button>
+        </div>
+      }
     </li>
   }
 </ul>

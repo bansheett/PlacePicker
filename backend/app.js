@@ -22,105 +22,165 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/places", async (req, res) => {
-  await new Promise((resolve) => setTimeout(resolve, 3000));
+// Middleware per estrarre l'userId dal token
+const getUserId = (req) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) return null;
+  
+  const token = authHeader.split(' ')[1]; // Bearer TOKEN
+  if (!token) return null;
 
-  //res.status(500).json();
+  try {
+    // In un'app reale, qui decodificheremmo il JWT
+    // Per semplicità, usiamo il token come userId
+    return token;
+  } catch {
+    return null;
+  }
+};
+
+app.get("/places", async (req, res) => {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
 
   const fileContent = await fs.readFile("./data/places.json");
-
   const placesData = JSON.parse(fileContent);
-
   res.status(200).json({ places: placesData });
 });
 
 app.get("/user-places", async (req, res) => {
-  const fileContent = await fs.readFile("./data/user-places.json");
+  const userId = getUserId(req);
+  if (!userId) {
+    return res.status(401).json({ message: 'Non autorizzato' });
+  }
 
-  const places = JSON.parse(fileContent);
-
-  res.status(200).json({ places });
+  try {
+    // Crea la directory user-places se non esiste
+    await fs.mkdir('./data/user-places', { recursive: true });
+    
+    // Prova a leggere i places dell'utente
+    try {
+      const fileContent = await fs.readFile(`./data/user-places/${userId}.json`);
+      const places = JSON.parse(fileContent);
+      res.status(200).json({ places });
+    } catch (error) {
+      // Se il file non esiste, restituisci un array vuoto
+      if (error.code === 'ENOENT') {
+        res.status(200).json({ places: [] });
+      } else {
+        throw error;
+      }
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Errore nel recupero dei places' });
+  }
 });
 
 app.put("/user-places", async (req, res) => {
-  const placeId = req.body.placeId;
-
-  const fileContent = await fs.readFile("./data/places.json");
-  const placesData = JSON.parse(fileContent);
-
-  const place = placesData.find((place) => place.id === placeId);
-
-  const userPlacesFileContent = await fs.readFile("./data/user-places.json");
-  const userPlacesData = JSON.parse(userPlacesFileContent);
-
-  let updatedUserPlaces = userPlacesData;
-
-  if (!userPlacesData.some((p) => p.id === place.id)) {
-    updatedUserPlaces = [...userPlacesData, place];
+  const userId = getUserId(req);
+  if (!userId) {
+    return res.status(401).json({ message: 'Non autorizzato' });
   }
 
-  await fs.writeFile(
-    "./data/user-places.json",
-    JSON.stringify(updatedUserPlaces)
-  );
+  const placeId = req.body.placeId;
+  if (!placeId) {
+    return res.status(400).json({ message: 'placeId mancante' });
+  }
 
-  res.status(200).json({ userPlaces: updatedUserPlaces });
+  try {
+    // Leggi il place dalla lista completa
+    const fileContent = await fs.readFile("./data/places.json");
+    const placesData = JSON.parse(fileContent);
+    const place = placesData.find((place) => place.id === placeId);
+
+    if (!place) {
+      return res.status(404).json({ message: 'Place non trovato' });
+    }
+
+    // Crea la directory user-places se non esiste
+    await fs.mkdir('./data/user-places', { recursive: true });
+
+    // Leggi i places dell'utente o inizializza un array vuoto
+    let userPlaces = [];
+    try {
+      const userPlacesContent = await fs.readFile(`./data/user-places/${userId}.json`);
+      userPlaces = JSON.parse(userPlacesContent);
+    } catch (error) {
+      if (error.code !== 'ENOENT') throw error;
+    }
+
+    // Aggiungi il nuovo place se non è già presente
+    if (!userPlaces.find(p => p.id === placeId)) {
+      userPlaces.push(place);
+      await fs.writeFile(
+        `./data/user-places/${userId}.json`,
+        JSON.stringify(userPlaces)
+      );
+    }
+
+    res.status(200).json({ userPlaces });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Errore nel salvataggio del place' });
+  }
 });
 
 app.delete("/user-places/:id", async (req, res) => {
-  const placeId = req.params.id;
-
-  const userPlacesFileContent = await fs.readFile("./data/user-places.json");
-  const userPlacesData = JSON.parse(userPlacesFileContent);
-
-  const placeIndex = userPlacesData.findIndex((place) => place.id === placeId);
-
-  let updatedUserPlaces = userPlacesData;
-
-  if (placeIndex >= 0) {
-    updatedUserPlaces.splice(placeIndex, 1);
+  const userId = getUserId(req);
+  if (!userId) {
+    return res.status(401).json({ message: 'Non autorizzato' });
   }
 
-  await fs.writeFile(
-    "./data/user-places.json",
-    JSON.stringify(updatedUserPlaces)
-  );
+  try {
+    // Leggi i places dell'utente
+    const userPlacesContent = await fs.readFile(`./data/user-places/${userId}.json`);
+    let userPlaces = JSON.parse(userPlacesContent);
 
-  res.status(200).json({ userPlaces: updatedUserPlaces });
+    // Rimuovi il place
+    userPlaces = userPlaces.filter(place => place.id !== req.params.id);
+    
+    // Salva il nuovo array
+    await fs.writeFile(
+      `./data/user-places/${userId}.json`,
+      JSON.stringify(userPlaces)
+    );
+
+    res.status(200).json({ userPlaces });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Errore nella rimozione del place' });
+  }
 });
 
 // Registrazione utente
 app.post("/register", async (req, res) => {
   const { username, password } = req.body;
 
+  if (!username || !password) {
+    return res.status(400).json({ message: 'Username e password richiesti' });
+  }
+
   try {
-    let users = [];
-    try {
-      const fileContent = await fs.readFile("./data/users.json", 'utf8');
-      users = JSON.parse(fileContent);
-    } catch (error) {
-      // Se il file non esiste o è vuoto, continuiamo con un array vuoto
-      console.log('Users file not found or empty, creating new one');
+    const fileContent = await fs.readFile("./data/users.json");
+    const users = JSON.parse(fileContent);
+
+    if (users.find(user => user.username === username)) {
+      return res.status(400).json({ message: 'Username già in uso' });
     }
 
-    // Verifica se l'utente esiste già
-    if (users.find((user) => user.username === username)) {
-      return res.status(422).json({ message: "Username already exists" });
-    }
-
-    // Crea nuovo utente
     const newUser = {
-      id: Math.random().toString(36).substr(2, 9),
+      id: Math.random().toString(36).slice(2),
       username,
-      password, // Nota: in un'app reale, la password dovrebbe essere criptata
+      password // In un'app reale, la password andrebbe hashata
     };
 
     users.push(newUser);
     await fs.writeFile("./data/users.json", JSON.stringify(users));
 
-    res.status(201).json({ message: "User created successfully" });
+    res.status(201).json({ message: 'Utente registrato con successo' });
   } catch (error) {
-    res.status(500).json({ message: "Could not save user." });
+    console.error(error);
+    res.status(500).json({ message: 'Errore nella registrazione' });
   }
 });
 
@@ -128,35 +188,38 @@ app.post("/register", async (req, res) => {
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
 
+  if (!username || !password) {
+    return res.status(400).json({ message: 'Username e password richiesti' });
+  }
+
   try {
-    const fileContent = await fs.readFile("./data/users.json", 'utf8');
-    const users = JSON.parse(fileContent || '[]');
+    const fileContent = await fs.readFile("./data/users.json");
+    const users = JSON.parse(fileContent);
 
     const user = users.find(
-      (user) => user.username === username && user.password === password
+      user => user.username === username && user.password === password
     );
 
     if (!user) {
-      return res.status(401).json({ message: "Authentication failed" });
+      return res.status(401).json({ message: 'Credenziali non valide' });
     }
 
-    // In un'app reale, dovresti generare un vero JWT token
-    const token = Math.random().toString(36).substr(2);
+    // In un'app reale, qui genereremmo un JWT
     res.status(200).json({
-      token,
-      userId: user.id,
+      token: user.id,
+      userId: user.id
     });
   } catch (error) {
-    res.status(500).json({ message: "Authentication failed" });
+    console.error(error);
+    res.status(500).json({ message: 'Errore nel login' });
   }
 });
 
 // 404
-app.use((req, res, next) => {
-  if (req.method === "OPTIONS") {
-    return next();
-  }
-  res.status(404).json({ message: "404 - Not Found" });
+app.use((req, res) => {
+  res.status(404).json({ message: 'Route non trovata' });
 });
 
-app.listen(3000);
+app.listen(3000, () => {
+  console.log('Server in ascolto sulla porta 3000');
+});

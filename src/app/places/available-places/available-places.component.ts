@@ -44,10 +44,14 @@ export class AvailablePlacesComponent implements OnInit{
   onSelectPlace(selectedPlace: Place) {
     this.placesService.addPlaceToUserPlaces(selectedPlace).subscribe({
       next: () => {
-        // Gestione successo
+        this.error.set('');
+        setTimeout(() => {
+          this.error.set('Luogo aggiunto ai preferiti!');
+          setTimeout(() => this.error.set(''), 2000);
+        }, 0);
       },
       error: (error) => {
-        // Gestione errore
+        this.error.set('Errore nell\'aggiunta del luogo ai preferiti. Riprova più tardi.');
       }
     });
 }

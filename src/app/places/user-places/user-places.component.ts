@@ -4,7 +4,6 @@ import { PlacesContainerComponent } from '../places-container/places-container.c
 import { PlacesComponent } from '../places.component';
 import { Place } from '../place.model';
 import { HttpClient } from '@angular/common/http';
-import { catchError, map, Subscription, throwError } from 'rxjs';
 import { PlacesService } from '../places.service';
 
 @Component({
@@ -38,6 +37,21 @@ export class UserPlacesComponent implements OnInit{
         });
       this.destroyRef.onDestroy(() => {
         subscription.unsubscribe();
+      });
+    }
+
+    onRemovePlace(place: Place) {
+      this.placesService.removeUserPlace(place).subscribe({
+        next: () => {
+          this.error.set('');
+          setTimeout(() => {
+            this.error.set('Luogo rimosso dai preferiti!');
+            setTimeout(() => this.error.set(''), 2000);
+          }, 0);
+        },
+        error: (error) => {
+          this.error.set('Errore nella rimozione del luogo dai preferiti. Riprova più tardi.');
+        }
       });
     }
   }    
