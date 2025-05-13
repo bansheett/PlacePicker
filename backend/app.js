@@ -12,8 +12,12 @@ app.use(bodyParser.json());
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*"); // allow all domains
-  res.setHeader("Access-Control-Allow-Methods", "GET, PUT, DELETE");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
 
   next();
 });
@@ -83,6 +87,68 @@ app.delete("/user-places/:id", async (req, res) => {
   );
 
   res.status(200).json({ userPlaces: updatedUserPlaces });
+});
+
+// Registrazione utente
+app.post("/register", async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    let users = [];
+    try {
+      const fileContent = await fs.readFile("./data/users.json", 'utf8');
+      users = JSON.parse(fileContent);
+    } catch (error) {
+      // Se il file non esiste o è vuoto, continuiamo con un array vuoto
+      console.log('Users file not found or empty, creating new one');
+    }
+
+    // Verifica se l'utente esiste già
+    if (users.find((user) => user.username === username)) {
+      return res.status(422).json({ message: "Username already exists" });
+    }
+
+    // Crea nuovo utente
+    const newUser = {
+      id: Math.random().toString(36).substr(2, 9),
+      username,
+      password, // Nota: in un'app reale, la password dovrebbe essere criptata
+    };
+
+    users.push(newUser);
+    await fs.writeFile("./data/users.json", JSON.stringify(users));
+
+    res.status(201).json({ message: "User created successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Could not save user." });
+  }
+});
+
+// Login utente
+app.post("/login", async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    const fileContent = await fs.readFile("./data/users.json", 'utf8');
+    const users = JSON.parse(fileContent || '[]');
+
+    const user = users.find(
+      (user) => user.username === username && user.password === password
+    );
+
+    if (!user) {
+      return res.status(401).json({ message: "Authentication failed" });
+    }
+
+    // In un'app reale, dovresti generare un vero JWT token
+    const token = Math.random().toString(36).substr(2);
+    res.status(200).json({
+      token,
+      userId: user.id,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Authentication failed" });
+  }
 });
 
 // 404
