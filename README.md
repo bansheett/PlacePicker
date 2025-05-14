@@ -1,27 +1,59 @@
-# Http
+# PlacePicker
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.0.0.
+PlacePicker è un'applicazione web che consente agli utenti di esplorare luoghi disponibili, aggiungerli ai propri preferiti e visualizzarli su una mappa interattiva. L'applicazione è stata sviluppata utilizzando Angular e un backend Node.js per la gestione dei dati.
 
-## Development server
+## Funzionalità principali
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- **Autenticazione**: Gli utenti possono registrarsi, effettuare il login e il logout. L'accesso alle funzionalità principali è protetto da un sistema di autenticazione basato su token.
+- **Esplorazione dei luoghi**: Gli utenti possono visualizzare una lista di luoghi disponibili con immagini e descrizioni.
+- **Gestione dei preferiti**: Gli utenti possono aggiungere luoghi ai propri preferiti e rimuoverli successivamente.
+- **Mappa interattiva**: I luoghi sono visualizzati su una mappa interattiva con marker e popup informativi.
+- **Esperienza utente dinamica**: L'interfaccia è reattiva e aggiorna automaticamente i dati senza necessità di ricaricare la pagina.
 
-## Code scaffolding
+## Tecnologie utilizzate
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- **Frontend**: Angular 18.0.0 con componenti standalone, segnali (`signal`) per la gestione dello stato e router per la navigazione.
+- **Backend**: Node.js con Express per la gestione delle API REST e un sistema di file JSON per la persistenza dei dati.
+- **Mappa**: Libreria Leaflet per la visualizzazione e l'interazione con la mappa.
+- **Autenticazione**: Simulazione di autenticazione tramite token salvati in `localStorage`.
 
-## Build
+## Struttura del progetto
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+- **Frontend**: Si trova nella directory `src/app` e include componenti per l'autenticazione, la gestione dei luoghi e la mappa.
+- **Backend**: Si trova nella directory `backend` e include un server Express che gestisce le richieste API e i dati degli utenti e dei luoghi.
 
-## Running unit tests
+## Come eseguire il progetto
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Prerequisiti
 
-## Running end-to-end tests
+- Node.js installato sulla macchina.
+- Angular CLI installato globalmente (`npm install -g @angular/cli`).
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+### Avvio del backend
 
-## Further help
+1. Spostarsi nella directory `backend`.
+2. Installare le dipendenze con `npm install`.
+3. Avviare il server con `node app.js`.
+4. Il backend sarà disponibile su `http://localhost:3000`.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+### Avvio del frontend
+
+1. Spostarsi nella directory principale del progetto.
+2. Installare le dipendenze con `npm install`.
+3. Avviare il server di sviluppo con `ng serve`.
+4. L'applicazione sarà disponibile su `http://localhost:4200`.
+
+## API disponibili
+
+### Backend
+
+- `GET /places`: Restituisce la lista di tutti i luoghi disponibili.
+- `GET /user-places`: Restituisce i luoghi preferiti dell'utente autenticato.
+- `PUT /user-places`: Aggiunge un luogo ai preferiti dell'utente.
+- `DELETE /user-places/:id`: Rimuove un luogo dai preferiti dell'utente.
+- `POST /register`: Registra un nuovo utente.
+- `POST /login`: Effettua il login e restituisce un token di autenticazione.
+
+## Ulteriori informazioni
+
+Per ulteriori dettagli sull'utilizzo di Angular CLI, consultare la [documentazione ufficiale](https://angular.io/cli).
