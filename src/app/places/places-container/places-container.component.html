@@ -1,7 +1,12 @@
 <section>
   <h2>{{ title() }}</h2>
   @if (places()) {
-    <app-map [places]="places() ?? []"/>
+    <div #mapSection>
+      <app-map 
+        [places]="places() ?? []"
+        [highlightedPlace]="highlightedPlace()"
+      />
+    </div>
   }
   <ng-content />
 </section>

@@ -17,6 +17,7 @@ export class AvailablePlacesComponent implements OnInit{
   places = signal<Place[] | undefined>(undefined);
   isFetching = signal(false);
   error = signal('');
+  highlightedPlace = signal<Place | null>(null);
   private placesService = inject(PlacesService)
   private destroyRef = inject(DestroyRef);
 
@@ -55,4 +56,8 @@ export class AvailablePlacesComponent implements OnInit{
       }
     });
 }
+
+  onHighlightPlace(place: Place) {
+    this.highlightedPlace.set(place);
+  }
 }

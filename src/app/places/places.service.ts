@@ -54,11 +54,15 @@ export class PlacesService {
   }
 
   removeUserPlace(place: Place) {
+    // Aggiorna immediatamente lo stato locale
+    this.userPlaces.update(places => places.filter(p => p.id !== place.id));
+    
     return this.httpClient
-      .delete<{ userPlaces: Place[] }>(`http://localhost:3000/user-places/${place.id}`)
+      .delete(`http://localhost:3000/user-places/${place.id}`)
       .pipe(
-        tap(response => {
-          this.userPlaces.set(response.userPlaces);
+        tap(() => {
+          // Conferma la rimozione nello stato locale
+          this.userPlaces.update(places => places.filter(p => p.id !== place.id));
         })
       );
   }

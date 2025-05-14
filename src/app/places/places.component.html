@@ -2,22 +2,37 @@
   @for (place of places(); track place.id) {
     <li class="place-item">
       @if (!showRemoveButton()) {
-        <button (click)="onSelectPlace(place)">
+        <div class="place-content">
           <img
             [src]="'http://localhost:3000/' + place.image.src"
             [alt]="place.image.alt"
+            (click)="onImageClick(place)"
+            style="cursor: pointer"
           />
-          <h3>{{ place.title }}</h3>
-        </button>
+          <div class="title-container">
+            <h3>{{ place.title }}</h3>
+            <button
+              class="favorite-button"
+              (click)="onSelectPlace(place)"
+              title="Add to favorites"
+            >
+              <span class="heart-icon">♥</span>
+            </button>
+          </div>
+        </div>
       } @else {
         <div class="place-content">
           <img
             [src]="'http://localhost:3000/' + place.image.src"
             [alt]="place.image.alt"
+            (click)="onImageClick(place)"
+            style="cursor: pointer"
           />
-          <h3>{{ place.title }}</h3>
+          <div class="title-container">
+            <h3>{{ place.title }}</h3>
+          </div>
           <button class="remove-button" (click)="onRemovePlace(place)">
-            Rimuovi dai preferiti
+            Remove from favorites
           </button>
         </div>
       }

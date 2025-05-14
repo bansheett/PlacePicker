@@ -17,9 +17,10 @@ export class UserPlacesComponent implements OnInit{
     places = signal<Place[] | undefined>(undefined);
     isFetching = signal(false);
     error = signal('');
+    highlightedPlace = signal<Place | null>(null);
     private httpClient = inject(HttpClient);
     private destroyRef = inject(DestroyRef);
-  private placesService = inject(PlacesService)
+    private placesService = inject(PlacesService);
 
     ngOnInit() {
       this.isFetching.set(true);
@@ -43,15 +44,18 @@ export class UserPlacesComponent implements OnInit{
     onRemovePlace(place: Place) {
       this.placesService.removeUserPlace(place).subscribe({
         next: () => {
-          this.error.set('');
-          setTimeout(() => {
-            this.error.set('Luogo rimosso dai preferiti!');
-            setTimeout(() => this.error.set(''), 2000);
-          }, 0);
+          // Aggiorna lo stato locale dopo la rimozione riuscita
+          this.places.update(currentPlaces => 
+            currentPlaces ? currentPlaces.filter(p => p.id !== place.id) : []
+          );
         },
-        error: (error) => {
-          this.error.set('Errore nella rimozione del luogo dai preferiti. Riprova più tardi.');
+        error: (err) => {
+          this.error.set('Errore durante la rimozione del luogo preferito');
         }
       });
     }
-  }    
+
+    onHighlightPlace(place: Place) {
+      this.highlightedPlace.set(place);
+    }
+  }

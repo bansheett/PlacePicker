@@ -1,4 +1,4 @@
-<app-places-container title="Your Favorite Places" [places]="places()">
+<app-places-container title="Your Favorite Places" [places]="places()" [highlightedPlace]="highlightedPlace()">
   @if (isFetching() && !error()) {
     <p class="fallback-text">Fetching favourite places...</p>
   }
@@ -8,8 +8,13 @@
   }
 
   @if (places()) {
-  <app-places [places]="places()!" [showRemoveButton]="true" (removePlace)="onRemovePlace($event)" />
+    <app-places 
+      [places]="places()!" 
+      [showRemoveButton]="true" 
+      (removePlace)="onRemovePlace($event)"
+      (highlightPlace)="onHighlightPlace($event)"
+    />
   } @else if (places()?.length === 0) {
-  <p class="fallback-text">Non hai ancora aggiunto nessun luogo ai preferiti.</p>
+    <p class="fallback-text">Non hai ancora aggiunto nessun luogo ai preferiti.</p>
   }
 </app-places-container>
