@@ -63,12 +63,18 @@ export class MapComponent implements AfterViewInit, OnChanges {
         .bindPopup(`
           <div>
             <h3>${place.title}</h3>
-            <img src="http://localhost:3000/${place.image.src}" alt="${place.image.alt}" style="max-width: 200px">
+            <img src="http://localhost:3000/${place.image.src}" alt="${place.image.alt}" style="max-width: 200px; border-radius: 4px;">
           </div>
         `);
       marker.addTo(this.map);
       this.markers.push(marker);
     });
+
+    // Centra la mappa sui marker se ci sono luoghi
+    if (this.places.length > 0) {
+      const bounds = L.latLngBounds(this.places.map(place => [place.lat, place.lon]));
+      this.map.fitBounds(bounds, { padding: [20, 20] });
+    }
   }
 
   private highlightPlace(place: Place): void {

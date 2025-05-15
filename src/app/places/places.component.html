@@ -36,6 +36,27 @@
           </button>
         </div>
       }
+      <button class="description-button" (click)="onShowDescription(place)">
+        Description
+      </button>
     </li>
   }
 </ul>
+
+@if (selectedPlace()) {
+  <div class="modal-backdrop">
+    <div class="modal">
+      <h2>{{ selectedPlace()!.title }}</h2>
+      @if (selectedPlace()?.image) {
+        <img
+          [src]="'http://localhost:3000/' + selectedPlace()!.image.src"
+          [alt]="selectedPlace()!.image.alt"
+        />
+      }
+      @if (selectedPlace()?.description) {
+        <p>{{ selectedPlace()!.description }}</p>
+      }
+      <button class="close-button" (click)="onCloseDescription()">Close</button>
+    </div>
+  </div>
+}

@@ -62,7 +62,7 @@ button:disabled {
 .switch-auth {
   text-align: center;
   color: #defaf8;
-  margin: 0;
+  margin: 1rem 0; /* Aggiusta il margine per centrare meglio */
 }
 
 .switch-auth a {

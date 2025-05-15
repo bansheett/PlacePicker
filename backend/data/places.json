@@ -7,7 +7,8 @@
       "alt": "A tranquil forest with a cascading waterfall amidst greenery."
     },
     "lat": 44.5588,
-    "lon": -80.344
+    "lon": -80.344,
+    "description": "A beautiful forest scene with a waterfall."
   },
   {
     "id": "p2",
@@ -17,7 +18,8 @@
       "alt": "Golden dunes stretching to the horizon in the Sahara Desert."
     },
     "lat": 25.0,
-    "lon": 0.0
+    "lon": 0.0,
+    "description": "The Sahara Desert is the largest hot desert in the world."
   },
   {
     "id": "p3",
@@ -27,7 +29,8 @@
       "alt": "The sun setting behind snow-capped peaks of majestic mountains."
     },
     "lat": 27.9881,
-    "lon": 86.925
+    "lon": 86.925,
+    "description": "The Himalayan Peaks are some of the highest mountains in the world."
   },
   {
     "id": "p4",
@@ -37,7 +40,8 @@
       "alt": "Pristine white sand and turquoise waters of a Caribbean beach."
     },
     "lat": 18.2208,
-    "lon": -66.5901
+    "lon": -66.5901,
+    "description": "A stunning Caribbean beach with clear waters and white sand."
   },
   {
     "id": "p5",
@@ -47,7 +51,8 @@
       "alt": "Historic ruins standing tall against the backdrop of the Grecian sky."
     },
     "lat": 37.9715,
-    "lon": 23.7257
+    "lon": 23.7257,
+    "description": "The Ancient Grecian Ruins are a testament to Greece's rich history."
   },
   {
     "id": "p6",
@@ -57,7 +62,8 @@
       "alt": "Lush canopy of a rainforest, teeming with life."
     },
     "lat": -3.4653,
-    "lon": -62.2159
+    "lon": -62.2159,
+    "description": "The Amazon Rainforest Canopy is home to an incredible diversity of species."
   },
   {
     "id": "p7",
@@ -67,7 +73,8 @@
       "alt": "Dazzling display of the Northern Lights in a starry sky."
     },
     "lat": 64.9631,
-    "lon": -19.0208
+    "lon": -19.0208,
+    "description": "The Northern Lights are a natural light display in the Earth's sky."
   },
   {
     "id": "p8",
@@ -77,7 +84,8 @@
       "alt": "Ancient Japanese temple surrounded by autumn foliage."
     },
     "lat": 34.9949,
-    "lon": 135.785
+    "lon": 135.785,
+    "description": "A serene Japanese temple set in a beautiful natural landscape."
   },
   {
     "id": "p9",
@@ -87,7 +95,8 @@
       "alt": "Vibrant coral formations of the Great Barrier Reef underwater."
     },
     "lat": -18.2871,
-    "lon": 147.6992
+    "lon": 147.6992,
+    "description": "The Great Barrier Reef is the world's largest coral reef system."
   },
   {
     "id": "p10",
@@ -97,7 +106,8 @@
       "alt": "Charming streets of Paris with historic buildings and cafes."
     },
     "lat": 48.8566,
-    "lon": 2.3522
+    "lon": 2.3522,
+    "description": "The streets of Paris are known for their historic architecture and vibrant culture."
   },
   {
     "id": "p11",
@@ -107,7 +117,8 @@
       "alt": "Expansive view of the deep gorges and ridges of the Grand Canyon."
     },
     "lat": 36.1069,
-    "lon": -112.1129
+    "lon": -112.1129,
+    "description": "The Grand Canyon is a steep-sided canyon carved by the Colorado River."
   },
   {
     "id": "p12",
@@ -117,7 +128,8 @@
       "alt": "Glistening waters of the Venetian canals as gondolas glide by at sunset."
     },
     "lat": 45.4408,
-    "lon": 12.3155
+    "lon": 12.3155,
+    "description": "The Venetian Canals are famous for their picturesque waterways and gondola rides."
   },
   {
     "id": "p13",
@@ -127,7 +139,8 @@
       "alt": "The iconic Taj Mahal reflecting in its surrounding waters during sunrise."
     },
     "lat": 27.1751,
-    "lon": 78.0421
+    "lon": 78.0421,
+    "description": "The Taj Mahal is an ivory-white marble mausoleum on the right bank of the river Yamuna."
   },
   {
     "id": "p14",
@@ -137,7 +150,8 @@
       "alt": "Tranquil waters and lush greenery of the Kerala backwaters."
     },
     "lat": 9.4981,
-    "lon": 76.3388
+    "lon": 76.3388,
+    "description": "The Kerala Backwaters are a network of lagoons and lakes lying parallel to the Arabian Sea."
   },
   {
     "id": "p15",
@@ -147,7 +161,8 @@
       "alt": "Wild animals roaming freely in the vast landscapes of the African savanna."
     },
     "lat": -2.153,
-    "lon": 34.6857
+    "lon": 34.6857,
+    "description": "The African Savanna is known for its wide-open spaces and diverse wildlife."
   },
   {
     "id": "p16",
@@ -157,7 +172,8 @@
       "alt": "The powerful cascade of Victoria Falls, a natural wonder between Zambia and Zimbabwe."
     },
     "lat": -17.9243,
-    "lon": 25.8572
+    "lon": 25.8572,
+    "description": "Victoria Falls is one of the largest and most famous waterfalls in the world."
   },
   {
     "id": "p17",
@@ -167,7 +183,8 @@
       "alt": "The historic Incan citadel of Machu Picchu illuminated by the morning sun."
     },
     "lat": -13.1631,
-    "lon": -72.545
+    "lon": -72.545,
+    "description": "Machu Picchu is an ancient Incan city located in the Andes mountains of Peru."
   },
   {
     "id": "p18",
@@ -177,6 +194,7 @@
       "alt": "Navigating the waters of the Amazon River, surrounded by dense rainforest."
     },
     "lat": -3.4653,
-    "lon": -58.38
+    "lon": -58.38,
+    "description": "The Amazon River is the largest river by discharge volume of water in the world."
   }
 ]
